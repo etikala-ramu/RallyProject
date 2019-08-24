@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html ng-app="rally-app"> 
+<head >
+<link href="bootstrap.min.css" rel="stylesheet">
+<link href="nifty.min.css" rel="stylesheet">
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="nifty.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+<script src='rally.js'></script> 
+<style>
+body {background-color:gainsboro;}
+h1   {color: blue;}
+p    {color:black;}
+.magic-checkbox {
+    position: absolute; 
+    display: none;
+}
+
+</style>
+</head>
+<body ng-controller='rallyController' class='container'>
+	<div class="panel mar-all">
+		<div class="panel-heading">
+			<h3 class="panel-title text-center">Rally form</h3>
+		</div>
+
+		<!--Block Styled Form -->
+		<!--===================================================-->
+		<form>
+			<div class="panel-body">
+				<div class="row">
+						<div class="form-inline">
+					            <div class="form-group col-sm-3">
+					                <label>COMP NO</label>
+					                <input type="text" placeholder="Enter comp no" id='compno' ng-model='driver.compno' class="form-control">
+					            </div>
+					            <div class="form-group col-sm-3">
+					                <label>DRIVER</label>
+					                <input type="text" placeholder="enter driver name" id='driver' ng-model='driver.driver' class="form-control">
+					            </div>
+					            <div class="form-group col-sm-3">
+										<label>CO DRIVER</label>
+										<input type="text" placeholder="enter co driver name" id='codriver' ng-model='driver.codriver' class="form-control">
+									</div>
+					            
+								</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="panel-group accordion">
+		<div class='panel panel-bordered panel-info' ng-repeat ="type in types">
+
+			<!--Accordion title-->
+			<div class="panel-heading">
+				<h1 class="panel-title">
+					<a data-parent="#accordion" data-toggle="collapse"
+						href="#collapse{{type.id}}" aria-expanded="false" class="collapsed">{{type.name}}</a>
+				</h1>
+			</div>
+
+			<!--Accordion content-->
+			<div class="panel-collapse collapse" id="collapse{{type.id}}"
+				aria-expanded="false" style="height: 0px;">
+				<form>
+					<div class="panel-body">
+					
+						<div class='row' ng-repeat='q in questions track by $index' ng-if="q.type.id == type.id">
+							<div class="col-lg-6">
+								<p>{{q.id}}.{{q.question}}</p>
+							</div>
+							
+							<div class="col-lg-6">
+									<div class="panel">
+											<div class="panel-heading">
+												<h3 class="panel-title text-center">Enter Text</h3>
+											</div>
+								
+											<!--Horizontal Form-->
+											<!--===================================================-->
+											
+											<form class="form-horizontal">
+													<div class="panel-body">
+														<div class="form-group">
+															<label class="col-sm-3 control-label">NAME</label>
+															<div class="col-sm-9">
+																<input type="text" ng-model='q.name' placeholder="enter name" class="form-control">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">COMMENTS</label>
+																<div class="col-sm-9">
+																	<textarea id="demo-textarea-input" rows="9" 
+																		class="form-control" placeholder="Your content here.." ng-model='q.comments'></textarea>
+																</div>
+															</div>
+
+														<div class="form-group">
+																<label class="col-sm-3 control-label">CHECKED</label>
+															<div class="col-sm-9">
+																<input ng-model="q.checked" ng-true-value="'YES'" ng-false-value="'NO'" class="magic-checkbox" type="checkbox">
+																<label>YES</label>
+															</div>
+														</div>
+													</div>
+													
+												</form>
+											<!--===================================================-->
+											<!--End Horizontal Form-->
+								
+										</div>
+							<!--	<div class="col-sm-3">
+									<div class="form-group">
+										<label class="control-label">NAME</label> <input type="text"
+											class="form-control" id='name' ng-model='q.name'>
+									</div>
+								</div>
+								<div class="form-group pad-ver col-sm-3">
+
+									<div class="col-md-4">
+										<div class="form-group pad-ver">
+											<div class="col-md-9">
+													<label class="btn btn-default">
+															<input type="checkbox" class="magic-checkbox" autocomplete="off" checked ng-model="q.checked" ng-true-value="'YES'" ng-false-value="'NO'">
+															<span class="glyphicon glyphicon-ok">Yes</span>
+														</label>
+												
+													
+									   
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div class="form-group col-sm-6">
+									<div class="col-md-9">
+										<textarea id="demo-textarea-input" rows="9" 
+											class="form-control" placeholder="Your content here.." ng-model='q.comments'></textarea>
+									</div>
+								</div>-->
+							</div>
+						
+						</div>
+						<!--<table>
+							<thead>
+								<tr>
+									<th>NAME</th>
+									<th>CHECKED(YES/NO)</th>
+									<th>COMMENTS</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat='q in questions' ng-if="q.type.id== 1">
+								   <td>{{q.id}}</td>
+								   <td>{{q.questions}}</td>
+								</tr>
+							</tbody>
+						</table>-->
+					</div>
+				</form>
+			</div>
+		</div>
+	
+
+	
+			</div>
+	<div class="panel-footer text-center">
+		<button class="btn btn-success" ng-click='saveData()' >Submit</button>
+	</div>
+
+	<!--===================================================-->
+	<!--End Block Styled Form -->
+	<!--<script>
+       (function(){
+    	   var app = angular.module("rally-app",[]);
+         	app.controller("rallyController",['$scope','$http',function($scope,$http){
+         		$scope.selected=1;
+         		$http.get("/questions/all").then(
+         				function(responce){
+         			$scope.questions=responce.data;
+         			console.log($scope.questions);
+         		})
+         	}])   
+       })();
+      	
+       </script>-->
+
+
+</body>
+</html>
